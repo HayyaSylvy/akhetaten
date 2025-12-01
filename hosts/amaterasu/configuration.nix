@@ -2,15 +2,13 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, inputs, pkgs, stylix, ... }:
-
-  #let acermodule = config.boot.kernelPackages.callPackage ./acer-rgb.nix {}; in
+{ config, pkgs, inputs, stylix, ... }:
 
 {
-  # Is empty due to Flakes already importing what I need (for now at least)
-  imports = [ 
-    #./../../modules/nixos/flatpak.nix
-  ];
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -18,12 +16,9 @@
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  
-  #boot.extraModulePackages = [ acermodule ];
-  #boot.kernelModules = [ "facer" "wmi" "sparse-keymap" "video" ]; 
 
-  boot.initrd.luks.devices."luks-d0910db7-64a9-40dd-8144-8be4a86ab0e8".device = "/dev/disk/by-uuid/d0910db7-64a9-40dd-8144-8be4a86ab0e8";
-  networking.hostName = "akhetaten"; # Define your hostname.
+  boot.initrd.luks.devices."luks-4b2cceb6-23eb-4e64-a942-7c10baf1fc8f".device = "/dev/disk/by-uuid/4b2cceb6-23eb-4e64-a942-7c10baf1fc8f";
+  networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -32,6 +27,9 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # Enables Flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Set your time zone.
   time.timeZone = "America/Fortaleza";
@@ -65,36 +63,19 @@
     isNormalUser = true;
     description = "Lady Hayya";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ 
-      mullvad-browser
-      fuzzel
-      git
-      gh
-    ];
+    packages = with pkgs; [];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  services.displayManager.sddm = {
-     enable = true;
-     wayland.enable = true;
-  };
-
-  programs.niri.enable = true;
-
-  stylix = {
-     enable = true;
-     base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-     image = ./gruvy.png;
-  };
-
   # List packages installed in system profile. To search, run:
+  # $ nix search wget
   environment.systemPackages = with pkgs; [
+    floorp-bin
+    kitty
+    fuzzel
   ];
-
-  # Enables Flakes (TDLR: Not sure if needed, here for... idk :P)
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -107,7 +88,20 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  # services.openssh.enable = true;
+ 
+  programs.niri.enable = true;  
+  services.displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+  };
+  
+  stylix = {
+     enable = true;
+     base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+     image = ./gruvy.png;
+     enableReleaseChecks = false;
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -121,6 +115,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "26.05"; # Did you read the comment?
 
 }

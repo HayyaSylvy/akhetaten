@@ -12,13 +12,15 @@
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = "25.05";
+  home.stateVersion = "26.05";
 
   # The home.packages option allows you to install Nix packages.
   home.packages = with pkgs; [
      hyfetch
      fastfetch
   ];
+
+  programs.nixvim.enable = true;
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -53,8 +55,15 @@
       tab_title_template = "{title}{' :{}:'.format(num_windows) if num_windows > 1 else ''}";
     };
   };
- 
+
+  programs.git.enable = true;
+  programs.gh = {
+    enable = true;
+    gitCredentialHelper.enable = true;
+  };
+
   stylix.targets.gtk.flatpakSupport.enable = true;
+  stylix.enableReleaseChecks = false;
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
