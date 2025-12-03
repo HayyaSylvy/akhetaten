@@ -1,4 +1,6 @@
-{ config, pkgs, lib, inputs, ... }:
+
+
+{ config, cfg, pkgs, lib, inputs, stylix, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -22,10 +24,11 @@
   home.stateVersion = "26.05";
 
   # The home.packages option allows you to install Nix packages.
-  home.packages = with pkgs; [
-     hyfetch
-     fastfetch
-     meslo-lgs-nf
+  home.packages = [
+     pkgs.hyfetch
+     pkgs.fastfetch
+     pkgs.meslo-lgs-nf
+     pkgs.nautilus
   ];
    
     xdg.configFile."GruvboxRose.json".text = ''
@@ -485,7 +488,40 @@
   };
 
   stylix.targets.gtk.flatpakSupport.enable = true;
-  stylix.enableReleaseChecks = true;
+  stylix.targets.qt.enable = true;
+  
+  programs.floorp = {
+       enable = true;
+       package = pkgs.floorp-bin;
+       profiles = {
+          "lady-of-war.default" = {
+             extensions.force = true;
+	     search = {
+	        default = "startpage";
+		engines = {
+              	    "Nix Packages" = {
+                      urls = [{
+        		template = "https://search.nixos.org/packages";
+                  	params = [
+                    	  { name = "type"; value = "packages"; }
+                    	  { name = "query"; value = "{searchTerms}"; }
+                  	];
+                      }];
+                      icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                      definedAliases = [ "@np" ];
+                    };
+	        };
+	     };
+	  };
+       };
+  };
+  stylix.targets.floorp = {
+       profileNames = [ "lady-of-war.default" ];
+       enable = true;
+       colorTheme.enable = true;
+       firefoxGnomeTheme.enable = true;
+  };
+  stylix.enableReleaseChecks = false;
   gtk.iconTheme = {
       name = "Gruvbox-Plus-Dark";
       package = pkgs.gruvbox-plus-icons;
@@ -510,6 +546,30 @@
       '';
   };
 
+  dconf.settings = {
+      "com/github/stunkymonkey/nautilus-open-any-terminal" = {
+        terminal = "kitty";
+      };
+  };
+
+  services.kdeconnect = {
+      enable = true;
+      indicator = true;
+  };
+
+    xdg.configFile.kdeglobals.source =
+    let
+      themePackage = builtins.head (
+        builtins.filter (
+          p: builtins.match ".*stylix-kde-theme.*" (builtins.baseNameOf p) != null
+        ) config.home.packages
+      );
+      colorSchemeSlug = lib.concatStrings (
+        lib.filter lib.isString (builtins.split "[^a-zA-Z]" config.lib.stylix.colors.scheme)
+      );
+    in
+    "${themePackage}/share/color-schemes/${colorSchemeSlug}.colors";
+
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
   # shell provided by Home Manager. If you don't want to manage your shell
@@ -528,6 +588,16 @@
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
+
+  xdg.configFile."qt6ct/qt6ct.conf".text = ''
+  	[Appearance]
+	custom_palette=true
+	style=kvantum
+	icon_theme=Gruvbox-Plus-Dark
+	[Fonts]
+	fixed="DejaVu Sans Mono,12"
+	general="DejaVu Sans,12"
+  '';
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

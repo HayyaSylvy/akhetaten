@@ -76,16 +76,12 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    floorp-bin
-    kitty
-    fuzzel
-    nautilus
   ];
 
-  programs.nautilus-open-any-terminal = {
-    enable = true;
-    terminal = "kitty";
-  };
+  programs.dconf.enable = true;
+
+  services.upower.enable = true;
+  services.power-profiles-daemon.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -136,7 +132,8 @@
 	size = 26;
      };
      image = ./gruvy.png;
-     enableReleaseChecks = true;
+     polarity = "dark";
+     enableReleaseChecks = false;
   };
 
   # Open ports in the firewall.
