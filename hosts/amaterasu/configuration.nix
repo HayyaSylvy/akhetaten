@@ -83,6 +83,10 @@
   	enable = true;
   	terminal = "kitty";
   };
+ 
+  # Enables GVFS to fix bugs on Nautilus.
+  services.gvfs.enable = true;
+
 
   # Enables Power Profile Daemon and Upower for (basic) perfomance control.
   services.upower.enable = true;
