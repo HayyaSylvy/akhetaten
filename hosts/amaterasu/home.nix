@@ -497,6 +497,7 @@
           "lady-of-war.default" = {
              extensions.force = true;
 	     search = {
+	        force = true;
 	        default = "startpage";
 		engines = {
               	    "Nix Packages" = {
@@ -544,12 +545,6 @@
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme 
       source ~/.config/zsh/.p10k.zsh
       '';
-  };
-
-  dconf.settings = {
-      "com/github/stunkymonkey/nautilus-open-any-terminal" = {
-        terminal = "kitty";
-      };
   };
 
   services.kdeconnect = {

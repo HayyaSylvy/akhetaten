@@ -67,7 +67,7 @@
     description = "Lady Hayya";
     shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    packages = with pkgs; [ pkgs.nautilus ];
   };
 
   # Allow unfree packages
@@ -78,8 +78,13 @@
   environment.systemPackages = with pkgs; [
   ];
 
-  programs.dconf.enable = true;
+  # Allow usage of Kitty as terminal in Nautilus
+  programs.nautilus-open-any-terminal = {
+  	enable = true;
+  	terminal = "kitty";
+  };
 
+  # Enables Power Profile Daemon and Upower for (basic) perfomance control.
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
 
@@ -100,12 +105,13 @@
   programs.niri.enable = true;  
   programs.dankMaterialShell.greeter = {
     enable = true;
-    compositor.name = "niri";  # Or "hyprland" or "sway"
+    compositor.name = "niri"; 
     configFiles = [
       "/home/ladyhayya/.config/DankMaterialShell/settings.json"
     ];
   };
-
+  
+  # Enables Stylix for the whole system and it's apps.
   stylix = {
      enable = true;
      base16Scheme = {
@@ -131,7 +137,7 @@
 	package = pkgs.capitaine-cursors-themed;
 	size = 26;
      };
-     image = ./gruvy.png;
+     image = ./../../modules/home-manager/assets/gruvy.png;
      polarity = "dark";
      enableReleaseChecks = false;
   };
