@@ -133,6 +133,7 @@
      cursor = {
         name = "Capitaine Cursors (Gruvbox)";
 	package = pkgs.capitaine-cursors-themed;
+	size = 26;
      };
      image = ./gruvy.png;
      enableReleaseChecks = true;
