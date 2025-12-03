@@ -28,11 +28,26 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Enable Bluetooth
+  hardware.bluetooth.enable = true;
+
+  # Enables Pipewire for sound support.
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true; # Should already be enabled, just making sure.
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
   # Enables Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Set your time zone.
   time.timeZone = "America/Fortaleza";
+
+  # Removes the Documentation App (Idk why this is preinstalled anyway :P)
+  documentation.nixos.enable = false;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "pt_BR.UTF-8";
