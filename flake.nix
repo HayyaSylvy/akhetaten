@@ -29,9 +29,10 @@
     };
     joviansteamos.url = "github:Jovian-Experiments/Jovian-NixOS";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    nixcord.url = "github:kaylorben/nixcord";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nix-flatpak, stylix, nixvim, dgop, dankMaterialShell, niri, joviansteamos, spicetify-nix, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, nix-flatpak, stylix, nixvim, dgop, dankMaterialShell, niri, joviansteamos, spicetify-nix, nixcord, ... }: {
     
     nixosConfigurations = {
       amaterasu = nixpkgs.lib.nixosSystem {
@@ -59,7 +60,6 @@
 	       extraSpecialArgs = { inherit inputs; };
                users.ladyhayya = { 
                   imports = [
-		    spicetify-nix.homeManagerModules.default		  
 		    # Imports the Home.nix file. (AKA: the most essential Home Manager file :P)
                     ./hosts/amaterasu/home.nix
 		    # Imports the required configurations for Niri (my Tiling Compositor) and DankMaterialShell (the Shell on top of Niri)
@@ -69,6 +69,7 @@
 		    ./modules/home-manager/apps/emulation.nix
 		    ./modules/home-manager/apps/floorp.nix
 		    ./modules/home-manager/apps/spotify.nix # Actually Spiceitfy :P
+		    ./modules/home-manager/apps/discord.nix # Actually Nixcord, which configures Vesktop not the Official Discord app :P
 		    ./modules/home-manager/apps/kitty.nix # :3
 		    ./modules/home-manager/apps/neovim.nix # should be Nixvim instead, idk work the same for me :P
 		    # Imports the configuration of my shell and some TUI utilities.
@@ -77,6 +78,8 @@
 		    # Imports the module that actually make some of the ones listed above work. 
 		    # Thank you for the authors, these are pretty incredible and useful :D
                     nixvim.homeModules.nixvim
+		    nixcord.homeModules.nixcord
+		    spicetify-nix.homeManagerModules.default		  
                     inputs.dankMaterialShell.homeModules.dankMaterialShell.default
                     inputs.dankMaterialShell.homeModules.dankMaterialShell.niri
                   ];
