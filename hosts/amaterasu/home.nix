@@ -20,11 +20,10 @@
   home.stateVersion = "26.05";
 
   # The home.packages option allows you to install Nix packages.
-  home.packages = [
-     pkgs.hyfetch
-     pkgs.fastfetch
-     pkgs.meslo-lgs-nf
-     pkgs.nautilus
+  home.packages = with pkgs; [
+     hyfetch
+     fastfetch
+     meslo-lgs-nf
   ];
   
   # Enables Neovim with the Nixvim manager. TODO: Move this to it's own module.
@@ -94,6 +93,13 @@
   services.kdeconnect = {
       enable = true;
       indicator = true;
+  };
+
+  # Enables Mangohud
+  programs.mangohud = {
+      enable = true;
+      package = pkgs.mangohud;
+      #settings = { }; # Here if needed one day.
   };
 
   # Home Manager can also manage your environment variables through

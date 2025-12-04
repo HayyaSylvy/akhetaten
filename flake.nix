@@ -27,10 +27,10 @@
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
+    joviansteamos.url = "github:Jovian-Experiments/Jovian-NixOS";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nix-flatpak, stylix, nixvim, dgop, dankMaterialShell, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, nix-flatpak, stylix, nixvim, dgop, dankMaterialShell, joviansteamos, ... }: {
     
     nixosConfigurations = {
       amaterasu = nixpkgs.lib.nixosSystem {
@@ -45,8 +45,11 @@
           stylix.nixosModules.stylix
           inputs.niri.nixosModules.niri
 	  inputs.dankMaterialShell.nixosModules.greeter
+	  inputs.joviansteamos.nixosModules.default
           # Imports other system-related modules
           ./modules/nixos/flatpak.nix
+	  ./modules/nixos/steam.nix
+	  ./modules/nixos/nvidia.nix
           # Setups Home Manager for "Lady Hayya" (AKA: this cute girl here :3)
           {
             home-manager = { 
@@ -60,6 +63,7 @@
 		    ./modules/home-manager/desktop/niri.nix
 		    ./modules/home-manager/desktop/dankmaterialshell.nix
 		    # Imports some configurations for apps I declare in Home Manager
+		    ./modules/home-manager/apps/emulation.nix
 		    ./modules/home-manager/apps/floorp.nix
 		    ./modules/home-manager/apps/kitty.nix # :3
 		    ./modules/home-manager/apps/neovim.nix # should be Nixvim instead, idk work the same for me :P

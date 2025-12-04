@@ -161,6 +161,19 @@
      enableReleaseChecks = false;
   };
 
+  # This SHOULD set my user picture. SHOULD
+  system.activationScripts.script.text = ''
+      mkdir -p /var/lib/AccountsService/{icons,users}
+      cp /home/ladyhayya/.nix-desktop/modules/home-manager/assets/icon.png /var/lib/AccountsService/icons/ladyhayya
+      echo -e "[User]\nIcon=/var/lib/AccountsService/icons/ladyhayya\n" > /var/lib/AccountsService/users/ladyhayya
+
+      chown root:root /var/lib/AccountsService/users/ladyhayya
+      chmod 0600 /var/lib/AccountsService/users/ladyhayya
+
+      chown root:root /var/lib/AccountsService/icons/ladyhayya
+      chmod 0444 /var/lib/AccountsService/icons/ladyhayya
+  '';
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
