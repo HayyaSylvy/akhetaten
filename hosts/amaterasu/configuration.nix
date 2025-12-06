@@ -16,6 +16,12 @@
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  
+  # Enables XDG Desktop Portals for permission fixes.
+  xdg.portal = { 
+  	enable = true;
+	extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
 
   boot.initrd.luks.devices."luks-4b2cceb6-23eb-4e64-a942-7c10baf1fc8f".device = "/dev/disk/by-uuid/4b2cceb6-23eb-4e64-a942-7c10baf1fc8f";
   networking.hostName = "amaterasu"; # Define your hostname.
@@ -131,7 +137,8 @@
   programs.niri.enable = true;
   programs.dankMaterialShell.greeter = {
     enable = true;
-    compositor.name = "niri"; 
+    compositor.name = "niri";
+    configHome = "/home/ladyhayya";
     configFiles = [
       "/home/ladyhayya/.config/DankMaterialShell/settings.json"
     ];
@@ -169,6 +176,7 @@
   };
 
   # This SHOULD set my user picture. SHOULD
+  # TLDR: No, this doesn't. TODO: Fix this.
   system.activationScripts.script.text = ''
       mkdir -p /var/lib/AccountsService/{icons,users}
       cp /home/ladyhayya/.nix-desktop/modules/home-manager/assets/icon.png /var/lib/AccountsService/icons/ladyhayya

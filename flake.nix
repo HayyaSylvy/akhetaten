@@ -30,6 +30,7 @@
     joviansteamos.url = "github:Jovian-Experiments/Jovian-NixOS";
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     nixcord.url = "github:kaylorben/nixcord";
+    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, nix-flatpak, stylix, nixvim, dgop, dankMaterialShell, niri, joviansteamos, spicetify-nix, nixcord, ... }: {
@@ -45,13 +46,14 @@
           home-manager.nixosModules.home-manager
           nix-flatpak.nixosModules.nix-flatpak
           stylix.nixosModules.stylix
+	  inputs.aagl.nixosModules.default
           inputs.niri.nixosModules.niri
 	  inputs.dankMaterialShell.nixosModules.greeter
 	  inputs.joviansteamos.nixosModules.default
           # Imports other system-related modules
-          ./modules/nixos/flatpak.nix
-	  ./modules/nixos/steam.nix
-	  ./modules/nixos/nvidia.nix
+          ./modules/nixos/apps/flatpak.nix
+	  ./modules/nixos/apps/steam.nix
+	  ./modules/nixos/hardware/nvidia.nix
           # Setups Home Manager for "Lady Hayya" (AKA: this cute girl here :3)
           {
             home-manager = { 
@@ -71,6 +73,8 @@
 		    ./modules/home-manager/apps/obsidian.nix
 		    ./modules/home-manager/apps/spotify.nix # Actually Spiceitfy :P
 		    ./modules/home-manager/apps/discord.nix # Actually Nixcord, which configures Vesktop not the Official Discord app :P
+		    ./modules/home-manager/apps/kdeconnect.nix
+		    ./modules/home-manager/apps/mangohud.nix
 		    ./modules/home-manager/apps/kitty.nix # :3
 		    ./modules/home-manager/apps/neovim.nix # should be Nixvim instead, idk work the same for me :P
 		    # Imports the configuration of my shell and some TUI utilities.

@@ -5,10 +5,6 @@
 		enable = true;
 		enableRenice = true;
 	};
-	#programs.gamescope = {
-  	#	enable = true;
-  	#	capSysNice = true;
-	#};
 	jovian.steam = {
 		enable = true;
 	};
@@ -17,13 +13,16 @@
 		protontricks.enable = true;
 		extraPackages = with pkgs; [
 			gamescope
+			gamescope-wsi
 			bluez
 			gamemode
 			mangohud # Installed just for Steam, configured in the home-manager module.
 		];
+		extraCompatPackages = with pkgs; [ proton-ge-bin ];
 	};
 	jovian.steamos.enableBluetoothConfig = true;
 	environment.systemPackages = with pkgs; [ 
 		gamescope-wsi
 	];
+
 }

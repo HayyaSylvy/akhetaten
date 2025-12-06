@@ -11,6 +11,10 @@
       createDirectories = true;
   };
 
+  xdg.mimeApps.defaultApplications = {
+    "inode/directory" = ["nautilus.desktop"];
+  };
+
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.
@@ -25,6 +29,11 @@
      fastfetch
      meslo-lgs-nf
      qbittorrent
+     celluloid
+     image-roll
+     prismlauncher
+     evince
+     snapshot
      sgdboop
   ];
   
@@ -87,19 +96,6 @@
       );
     in
     "${themePackage}/share/color-schemes/${colorSchemeSlug}.colors";
-
-  # Enables KDEConnect and it's indicators (I have no reason to create a module just for this four lines :P)
-  services.kdeconnect = {
-      enable = true;
-      indicator = true;
-  };
-
-  # Enables Mangohud
-  programs.mangohud = {
-      enable = true;
-      package = pkgs.mangohud;
-      #settings = { }; # Here if needed one day.
-  };
 
   # Home Manager can also manage your environment variables through
   # 'home.sessionVariables'. These will be explicitly sourced when using a
